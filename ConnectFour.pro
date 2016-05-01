@@ -13,11 +13,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    Organizer.cpp
 
 HEADERS  += mainwindow.h \
     gui.h \
-    clickablegraphicsview.h
+    clickablegraphicsview.h \
+    Organizer.h \
+    Player.h
 
 FORMS    += mainwindow.ui
 
