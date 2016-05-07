@@ -13,9 +13,14 @@ int Organizer::play(int x)  {
     }
 
     grid[x][y] = turn->getcolour();
-    if(isWinning(x,y))
-        qDebug() <<QString::fromStdString(turn->getname()) << QString("WON");//win the game
-    //else
+    plays->push_back(x);
+    if(isWinning(x,y)) {
+        auto player = turnToPlay();
+        player->setscore(player->getscore() + 1);
+        emit finished(player);
+        return -1;
+    }
+    else
         switchTurn();
     return y;
 }
