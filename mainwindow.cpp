@@ -32,6 +32,23 @@ void MainWindow::columnClicked(int column) {
 
 }
 
+void MainWindow::undo(){
+    pair<int,int> play = gameOrganizer->undo();
+    //helper->clearBlock(play->first, play->second, QBrush(QColor(Qt::none)));
+    Player* turn = gameOrganizer->turnToPlay();
+    //do something with turn
+}
+
+void MainWindow::redo(){
+    Player* color = gameOrganizer->turnToPlay()->getcolour();
+    pair<int,int> play = gameOrganizer->redo();
+
+    if(color == 'r')
+        helper->drawBlock(play.first, play.second, QBrush(QColor(Qt::red)));
+    else if(color == 'b')
+        helper->drawBlock(play.first, play.second, QBrush(QColor(Qt::blue)));
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;

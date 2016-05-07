@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <stack>
 
 class Organizer
 {
@@ -8,6 +9,10 @@ private:
 
     bool isWinning(int x, int y);
     void switchTurn();
+
+    stack<pair<int,int>> undo_stack;
+    stack<pair<int,int>> redo_stack;
+
 public:
     Organizer(Player *p1, Player *p2) {
         player1 = p1;
@@ -23,6 +28,9 @@ public:
     }
 
     int play(int x);
+
+    pair<int,int> undo();
+    pair<int,int> redo();
 
     void setPlayer1(Player *p){
         player1 = p;

@@ -17,7 +17,31 @@ int Organizer::play(int x)  {
         qDebug() <<QString::fromStdString(turn->getname()) << QString("WON");//win the game
     //else
         switchTurn();
+
+    undo_stack.push((x,y));
+    while(!redo_stack.empty())
+        redo_stack.pop();
     return y;
+}
+
+pair<int,int> Organizer::undo(){
+    switchTurn();
+    if(undo_stack.empty())
+        return false;
+    pair<int,int> play = undo_stack.pop();
+    grid[play.first][play.second] = '0';
+    redo_stack.push(play);
+    return play;
+}
+
+pair<int,int> Organizer::redo() {
+    if(redo_stack.empty())
+        return false;
+    pair<int,int> play = redo_stack.pop();
+    grid[play.first][play.second] = turnToPlay()->getcolour();
+    undo_stack.push(play);
+    switchTurn();
+    return play;
 }
 
 bool Organizer::isWinning(int x, int y) {
