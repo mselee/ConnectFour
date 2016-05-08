@@ -59,24 +59,34 @@ void MainWindow::columnClicked(int column) {
         helper->drawBlock(column, row, QBrush(QColor(Qt::red)));
     else if(color == 'b')
         helper->drawBlock(column, row, QBrush(QColor(Qt::blue)));
+    ui->btnUndo->setProperty("enabled", true);
+    ui->btnRedo->setProperty("enabled", false);
 
 }
 
 void MainWindow::undo(){
     pair<int,int> play = gameOrganizer->undo();
-    //helper->clearBlock(play->first, play->second, QBrush(QColor(Qt::none)));
-    Player* turn = gameOrganizer->turnToPlay();
+    if(play.first != -1 && play.second != -1){
+        helper->drawBlock(play.first, play.second, QBrush(QColor(Qt::white)));
+        ui->btnRedo->setProperty("enabled", true);
+        ui->btnUndo->setProperty("enabled", false);
+    }
+
+   // Player* turn = gameOrganizer->turnToPlay();
     //do something with turn
 }
 
 void MainWindow::redo(){
     char color = gameOrganizer->turnToPlay()->getcolour();
     pair<int,int> play = gameOrganizer->redo();
-
-    if(color == 'r')
-        helper->drawBlock(play.first, play.second, QBrush(QColor(Qt::red)));
-    else if(color == 'b')
-        helper->drawBlock(play.first, play.second, QBrush(QColor(Qt::blue)));    
+    if(play.first != -1 && play.second != -1) {
+        if(color == 'r')
+            helper->drawBlock(play.first, play.second, QBrush(QColor(Qt::red)));
+        else if(color == 'b')
+            helper->drawBlock(play.first, play.second, QBrush(QColor(Qt::blue)));
+        ui->btnUndo->setProperty("enabled", true);
+        ui->btnRedo->setProperty("enabled", false);
+    }
 }
 
 void MainWindow::on_btnSave_clicked()

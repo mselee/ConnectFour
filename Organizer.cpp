@@ -23,7 +23,8 @@ int Organizer::play(int x)  {
     else
         switchTurn();
 
-    undo_stack.push((x,y));
+    pair<int,int> play(x,y);
+    undo_stack.push(play);
     while(!redo_stack.empty())
         redo_stack.pop();
     return y;
@@ -31,18 +32,27 @@ int Organizer::play(int x)  {
 
 pair<int,int> Organizer::undo(){
     switchTurn();
-    if(undo_stack.empty())
-        return false;
-    pair<int,int> play = undo_stack.pop();
+    pair<int,int> play;
+    if(undo_stack.empty()){
+        play = make_pair(-1,-1);
+        return play;
+    }
+   play = undo_stack.top();
+    undo_stack.pop();
     grid[play.first][play.second] = '0';
     redo_stack.push(play);
     return play;
 }
 
 pair<int,int> Organizer::redo() {
+    pair<int,int> play;
     if(redo_stack.empty())
-        return false;
-    pair<int,int> play = redo_stack.pop();
+    {
+        play = make_pair(-1,-1);
+        return play;
+    }
+    play = redo_stack.top();
+    redo_stack.pop();
     grid[play.first][play.second] = turnToPlay()->getcolour();
     undo_stack.push(play);
     switchTurn();
