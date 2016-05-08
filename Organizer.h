@@ -5,20 +5,17 @@
 
 using namespace std;
 
-class Organizer : public QObject
+class Organizer
 {
-    Q_OBJECT
 private:
     Player *player1, *player2, *turn;
     char **grid = new char*[7];
     bool isWinning(int x, int y);
     void switchTurn();
+    bool finished;
 
     stack<pair<int,int>> undo_stack;
     stack<pair<int,int>> redo_stack;
-
-signals:
-    void finished(Player *player);
 
 public:
     QVector<int> *plays;
@@ -33,6 +30,7 @@ public:
     }
 
     void init() {
+        finished = false;
         plays = new QVector<int>();
         for(int i = 0; i<7; i++){
             grid[i] = new char[6];
@@ -73,5 +71,9 @@ public:
 
     char getGrid(int x,int y){
         return grid[x][y];
+    }
+
+    bool isFinished() const {
+        return finished;
     }
 };

@@ -30,7 +30,6 @@ void MainWindow::newGameClk() {
     ui->Score2->setText("0");
 
     gameOrganizer = new Organizer(p1,p2);
-    connect(gameOrganizer, SIGNAL(finished(Player*)), this, SLOT(finished(Player*)));
 
     startGame();
 }
@@ -52,7 +51,7 @@ void MainWindow::finished(Player *player) {
         startGame();
     }
     else {
-       newGameClk();
+//       newGameClk();
        ui->P1Name->setEnabled(true);
        ui->P2Name->setEnabled(true);
     }
@@ -62,7 +61,6 @@ void MainWindow::finished(Player *player) {
 void MainWindow::columnClicked(int column) {
     Player* turn = gameOrganizer->turnToPlay();
     int row = gameOrganizer->play(column);
-    if (row == -1) return;
     char color = turn->getcolour();
 
     if(color == 'r')
@@ -72,6 +70,7 @@ void MainWindow::columnClicked(int column) {
     ui->btnUndo->setProperty("enabled", true);
     ui->btnRedo->setProperty("enabled", false);
     updateTurn();
+    if (gameOrganizer->isFinished()) finished(gameOrganizer->turnToPlay());
 }
 
 void MainWindow::undo(){
@@ -147,7 +146,7 @@ void MainWindow::on_btnLoad_clicked()
             ui->Score2->setText(QString::number(score));
 
             gameOrganizer = new Organizer(p1,p2);
-            connect(gameOrganizer, SIGNAL(finished(Player*)), this, SLOT(finished(Player*)));
+
             startGame();
 
             while (!stream.atEnd())

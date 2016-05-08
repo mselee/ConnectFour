@@ -33,10 +33,10 @@ private:
     Organizer *gameOrganizer;
     void startGame();
     void updateTurn();
+    void finished(Player* player);
 private slots:
     void columnClicked(int column);
     void newGameClk();
-    void finished(Player* player);
     void undo();
     void redo();
     void on_btnLoad_clicked();

@@ -17,8 +17,7 @@ int Organizer::play(int x)  {
     if(isWinning(x,y)) {
         auto player = turnToPlay();
         player->setscore(player->getscore() + 1);
-        emit finished(player);
-        return -1;
+        finished = true;
     }
     else
         switchTurn();
