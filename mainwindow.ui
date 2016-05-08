@@ -168,6 +168,9 @@
     </widget>
    </widget>
    <widget class="QPushButton" name="btnUndo">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -181,6 +184,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="btnRedo">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>50</x>

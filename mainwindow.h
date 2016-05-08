@@ -20,14 +20,14 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    Player *p1;
-    Player *p2;
 
-    Organizer *gameOrganizer;
 
 private:
     Ui::MainWindow *ui;
     gui* helper;
+    Player *p1;
+    Player *p2;
+    Organizer *gameOrganizer;
     void startGame();
 private slots:
     void columnClicked(int column);

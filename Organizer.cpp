@@ -22,7 +22,41 @@ int Organizer::play(int x)  {
     }
     else
         switchTurn();
+
+    pair<int,int> play(x,y);
+    undo_stack.push(play);
+    while(!redo_stack.empty())
+        redo_stack.pop();
     return y;
+}
+
+pair<int,int> Organizer::undo(){
+    switchTurn();
+    pair<int,int> play;
+    if(undo_stack.empty()){
+        play = make_pair(-1,-1);
+        return play;
+    }
+   play = undo_stack.top();
+    undo_stack.pop();
+    grid[play.first][play.second] = '0';
+    redo_stack.push(play);
+    return play;
+}
+
+pair<int,int> Organizer::redo() {
+    pair<int,int> play;
+    if(redo_stack.empty())
+    {
+        play = make_pair(-1,-1);
+        return play;
+    }
+    play = redo_stack.top();
+    redo_stack.pop();
+    grid[play.first][play.second] = turnToPlay()->getcolour();
+    undo_stack.push(play);
+    switchTurn();
+    return play;
 }
 
 bool Organizer::isWinning(int x, int y) {

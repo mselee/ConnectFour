@@ -33,7 +33,7 @@ void MainWindow::startGame() {
 
 void MainWindow::finished(Player *player) {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Game Finished!", "Player " + player->getname() + " has won. Replay ?", QMessageBox::Yes | QMessageBox::No);
+    reply = QMessageBox::question(this, "Game Finished!", player->getname() + " has won. Replay ?", QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         if(player->getcolour()=='r')
             ui->Score1->setText(QString::number(player->getscore()));
@@ -48,13 +48,6 @@ void MainWindow::finished(Player *player) {
     }
 }
 
-void MainWindow::undo() {
-  // to delete a block, call drawBlock with color == white
-}
-
-void MainWindow::redo() {
-
-}
 
 void MainWindow::columnClicked(int column) {
     Player* turn = gameOrganizer->turnToPlay();
@@ -66,7 +59,34 @@ void MainWindow::columnClicked(int column) {
         helper->drawBlock(column, row, QBrush(QColor(Qt::red)));
     else if(color == 'b')
         helper->drawBlock(column, row, QBrush(QColor(Qt::blue)));
+    ui->btnUndo->setProperty("enabled", true);
+    ui->btnRedo->setProperty("enabled", false);
 
+}
+
+void MainWindow::undo(){
+    pair<int,int> play = gameOrganizer->undo();
+    if(play.first != -1 && play.second != -1){
+        helper->drawBlock(play.first, play.second, QBrush(QColor(Qt::white)));
+        ui->btnRedo->setProperty("enabled", true);
+        ui->btnUndo->setProperty("enabled", false);
+    }
+
+   // Player* turn = gameOrganizer->turnToPlay();
+    //do something with turn
+}
+
+void MainWindow::redo(){
+    char color = gameOrganizer->turnToPlay()->getcolour();
+    pair<int,int> play = gameOrganizer->redo();
+    if(play.first != -1 && play.second != -1) {
+        if(color == 'r')
+            helper->drawBlock(play.first, play.second, QBrush(QColor(Qt::red)));
+        else if(color == 'b')
+            helper->drawBlock(play.first, play.second, QBrush(QColor(Qt::blue)));
+        ui->btnUndo->setProperty("enabled", true);
+        ui->btnRedo->setProperty("enabled", false);
+    }
 }
 
 void MainWindow::on_btnSave_clicked()

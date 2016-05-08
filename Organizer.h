@@ -1,6 +1,9 @@
 #include <QObject>
 #include <QVector>
 #include "Player.h"
+#include <stack>
+
+using namespace std;
 
 class Organizer : public QObject
 {
@@ -10,8 +13,13 @@ private:
     char **grid = new char*[7];
     bool isWinning(int x, int y);
     void switchTurn();
+
+    stack<pair<int,int>> undo_stack;
+    stack<pair<int,int>> redo_stack;
+
 signals:
     void finished(Player *player);
+
 public:
     QVector<int> *plays;
 
@@ -31,6 +39,9 @@ public:
     }
 
     int play(int x);
+
+    pair<int,int> undo();
+    pair<int,int> redo();
 
     void setPlayer1(Player *p){
         player1 = p;
