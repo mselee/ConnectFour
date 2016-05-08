@@ -2,6 +2,7 @@
 #define GUI
 #include <QGraphicsScene>
 #include <QMouseEvent>
+#include <QDebug>
 #include "clickablegraphicsview.h"
 
 class gui : public QObject
@@ -35,7 +36,9 @@ public:
         scene->addRect(0, 0, width, height, penWhite, brushWhite);
 
         view = gv;
+        int margin = (view->parentWidget()->parentWidget()->width() - getWidth()) / 2;
         view->resize(getWidth(), getHeight());
+        view->move(margin, margin);
         view->setScene(scene);
         connect(view, SIGNAL(clicked(QMouseEvent*)), this, SLOT(onViewClick(QMouseEvent*)));
     }

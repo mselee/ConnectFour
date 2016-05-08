@@ -4,9 +4,12 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QFile>
+#include <QDir>
+#include <QDateTime>
 #include <QTextStream>
 #include "gui.h"
 #include "Organizer.h"
+#include "loaddialog.h"
 
 
 namespace Ui {
@@ -29,6 +32,7 @@ private:
     Player *p2;
     Organizer *gameOrganizer;
     void startGame();
+    void updateTurn();
 private slots:
     void columnClicked(int column);
     void newGameClk();

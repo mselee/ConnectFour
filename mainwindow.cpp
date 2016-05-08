@@ -11,6 +11,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->btnNew, SIGNAL(clicked(bool)),this, SLOT(newGameClk()));
     connect(ui->btnUndo, SIGNAL(clicked(bool)),this, SLOT(undo()));
     connect(ui->btnRedo, SIGNAL(clicked(bool)),this, SLOT(redo()));
+    QDir().mkpath("games");
+    gameOrganizer = nullptr;
+}
+
+void MainWindow::updateTurn() {
+    ui->lbl_current_player->setText("Current Turn: " + gameOrganizer->turnToPlay()->getname());
 }
 
 void MainWindow::newGameClk() {
@@ -19,6 +25,9 @@ void MainWindow::newGameClk() {
 
     p1 = new Player(ui->P1Name->text(), 'r');
     p2 = new Player(ui->P2Name->text(), 'b');
+
+    ui->Score1->setText("0");
+    ui->Score2->setText("0");
 
     gameOrganizer = new Organizer(p1,p2);
     connect(gameOrganizer, SIGNAL(finished(Player*)), this, SLOT(finished(Player*)));
@@ -29,6 +38,7 @@ void MainWindow::newGameClk() {
 void MainWindow::startGame() {
     helper->drawGrid();
     gameOrganizer->init();
+    updateTurn();
 }
 
 void MainWindow::finished(Player *player) {
@@ -61,7 +71,7 @@ void MainWindow::columnClicked(int column) {
         helper->drawBlock(column, row, QBrush(QColor(Qt::blue)));
     ui->btnUndo->setProperty("enabled", true);
     ui->btnRedo->setProperty("enabled", false);
-
+    updateTurn();
 }
 
 void MainWindow::undo(){
@@ -72,8 +82,8 @@ void MainWindow::undo(){
         ui->btnUndo->setProperty("enabled", false);
     }
 
-   // Player* turn = gameOrganizer->turnToPlay();
-    //do something with turn
+   updateTurn();
+
 }
 
 void MainWindow::redo(){
@@ -87,93 +97,77 @@ void MainWindow::redo(){
         ui->btnUndo->setProperty("enabled", true);
         ui->btnRedo->setProperty("enabled", false);
     }
+    updateTurn();
 }
 
 void MainWindow::on_btnSave_clicked()
 {
-    QFile game("game.txt");
+    QString timestamp = QDateTime().currentDateTime().toString();
+    QString filename = gameOrganizer->getPlayer1()->getname() + " vs " + gameOrganizer->getPlayer2()->getname() + " [" + timestamp + "]";
+    QFile game("games/" + filename + ".txt");
     if (game.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text))
     {
         QTextStream stream(&game);
+        stream << gameOrganizer->getPlayer1()->getname() << endl;
+        stream << gameOrganizer->getPlayer1()->getscore() << endl;
+        stream << gameOrganizer->getPlayer2()->getname() << endl;
+        stream << gameOrganizer->getPlayer2()->getscore() << endl;
         for (int i = 0; i < gameOrganizer->plays->count(); ++i) {
             stream << gameOrganizer->plays->at(i) << endl;
         }
         game.close();
     }
-
-    QFile player1("player1.txt");
-    if (player1.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text))
-    {
-        QTextStream stream(&player1);
-        stream << gameOrganizer->getPlayer1()->getname() << endl;
-        stream << gameOrganizer->getPlayer1()->getscore() << endl;
-        player1.close();
-    }
-
-    QFile player2("player2.txt");
-    if (player2.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text))
-    {
-        QTextStream stream(&player2);
-        stream << gameOrganizer->getPlayer2()->getname() << endl;
-        stream << gameOrganizer->getPlayer2()->getscore() << endl;
-        player2.close();
-    }
 }
 
 void MainWindow::on_btnLoad_clicked()
 {
-    Player *p1, *p2;
+    LoadDialog* dialog = new LoadDialog(this);
+    if (dialog->exec() == QDialog::Accepted) {
+        Player *p1, *p2;
 
-    ui->P1Name->setEnabled(false);
-    ui->P2Name->setEnabled(false);
+        ui->P1Name->setEnabled(false);
+        ui->P2Name->setEnabled(false);
 
-    QFile player1("player1.txt");
-    if (player1.open(QIODevice::ReadOnly))
-    {
-        QTextStream stream(&player1);
-        QString name = stream.readLine();
-        int score = stream.readLine().toInt();
-        p1 = new Player(name, 'r');
-        p1->setscore(score);
-        ui->P1Name->setText(name);
-        ui->Score1->setText(QString::number(score));
-        player1.close();
+        QFile game("games/" + dialog->filename);
+        if (game.open(QIODevice::ReadOnly))
+        {
+            QTextStream stream(&game);
+            QString name = stream.readLine();
+            int score = stream.readLine().toInt();
+            p1 = new Player(name, 'r');
+            p1->setscore(score);
+            ui->P1Name->setText(name);
+            ui->Score1->setText(QString::number(score));
+
+            name = stream.readLine();
+            score = stream.readLine().toInt();
+            p2 = new Player(name, 'b');
+            p2->setscore(score);
+            ui->P2Name->setText(name);
+            ui->Score2->setText(QString::number(score));
+
+            gameOrganizer = new Organizer(p1,p2);
+            connect(gameOrganizer, SIGNAL(finished(Player*)), this, SLOT(finished(Player*)));
+            startGame();
+
+            while (!stream.atEnd())
+            {
+               int x = stream.readLine().toInt();
+               columnClicked(x);
+            }
+
+            game.close();
+        }
     }
+    delete dialog;
 
-    QFile player2("player2.txt");
-    if (player2.open(QIODevice::ReadOnly))
-    {
-        QTextStream stream(&player2);
-        QString name = stream.readLine();
-        int score = stream.readLine().toInt();
-        p2 = new Player(name, 'b');
-        p2->setscore(score);
-        ui->P2Name->setText(name);
-        ui->Score2->setText(QString::number(score));
-        player2.close();
-    }
-
-    gameOrganizer = new Organizer(p1,p2);
-    connect(gameOrganizer, SIGNAL(finished(Player*)), this, SLOT(finished(Player*)));
-    startGame();
-
-    QFile inputFile("game.txt");
-    if (inputFile.open(QIODevice::ReadOnly))
-    {
-       QTextStream in(&inputFile);
-       while (!in.atEnd())
-       {
-          QString line = in.readLine();
-          int x = line.toInt();
-          columnClicked(x);
-
-       }
-       inputFile.close();
-    }
 
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete helper;
+    if (gameOrganizer != nullptr)
+        delete gameOrganizer;
 }

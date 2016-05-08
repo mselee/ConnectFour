@@ -27,6 +27,10 @@ public:
         player1 = p1;
         player2 = p2;
     }
+    ~Organizer() {
+        delete player1;
+        delete player2;
+    }
 
     void init() {
         plays = new QVector<int>();

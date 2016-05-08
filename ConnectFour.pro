@@ -14,14 +14,17 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    Organizer.cpp
+    Organizer.cpp \
+    loaddialog.cpp
 
 HEADERS  += mainwindow.h \
     gui.h \
     clickablegraphicsview.h \
     Organizer.h \
-    Player.h
+    Player.h \
+    loaddialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    loaddialog.ui
 
 CONFIG += c++11

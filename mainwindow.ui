@@ -6,9 +6,27 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>398</width>
-    <height>500</height>
+    <width>401</width>
+    <height>515</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>401</width>
+    <height>515</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>401</width>
+    <height>515</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -34,7 +52,7 @@
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>460</y>
+      <y>480</y>
       <width>80</width>
       <height>23</height>
      </rect>
@@ -47,13 +65,21 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>340</y>
+      <y>360</y>
       <width>181</width>
       <height>111</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QGroupBox {
+color: red;
+}</string>
+    </property>
     <property name="title">
-     <string>Player 1 (Red)</string>
+     <string>Player 1</string>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
     </property>
     <widget class="QLineEdit" name="P1Name">
      <property name="geometry">
@@ -109,13 +135,18 @@
     <property name="geometry">
      <rect>
       <x>210</x>
-      <y>340</y>
+      <y>360</y>
       <width>181</width>
       <height>111</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QGroupBox {
+color: blue;
+}</string>
+    </property>
     <property name="title">
-     <string>Player 2 (Blue)</string>
+     <string>Player 2</string>
     </property>
     <widget class="QLineEdit" name="P2Name">
      <property name="geometry">
@@ -174,7 +205,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>460</y>
+      <y>480</y>
       <width>31</width>
       <height>23</height>
      </rect>
@@ -190,7 +221,7 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>460</y>
+      <y>480</y>
       <width>31</width>
       <height>23</height>
      </rect>
@@ -203,7 +234,7 @@
     <property name="geometry">
      <rect>
       <x>130</x>
-      <y>460</y>
+      <y>480</y>
       <width>80</width>
       <height>23</height>
      </rect>
@@ -216,13 +247,26 @@
     <property name="geometry">
      <rect>
       <x>220</x>
-      <y>460</y>
+      <y>480</y>
       <width>80</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
      <string>Load</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_current_player">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>340</y>
+      <width>381</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Current Turn:</string>
     </property>
    </widget>
   </widget>
