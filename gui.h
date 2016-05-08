@@ -38,8 +38,6 @@ public:
         view->resize(getWidth(), getHeight());
         view->setScene(scene);
         connect(view, SIGNAL(clicked(QMouseEvent*)), this, SLOT(onViewClick(QMouseEvent*)));
-
-        drawGrid();
     }
 
     int getWidth() const { return width; }

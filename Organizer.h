@@ -1,30 +1,41 @@
+#include <QObject>
+#include <QVector>
 #include "Player.h"
 #include <stack>
 
-class Organizer
+using namespace std;
+
+class Organizer : public QObject
 {
+    Q_OBJECT
 private:
     Player *player1, *player2, *turn;
     char **grid = new char*[7];
-
     bool isWinning(int x, int y);
     void switchTurn();
 
     stack<pair<int,int>> undo_stack;
     stack<pair<int,int>> redo_stack;
 
+signals:
+    void finished(Player *player);
+
 public:
+    QVector<int> *plays;
+
     Organizer(Player *p1, Player *p2) {
         player1 = p1;
         player2 = p2;
+    }
 
-        turn = p1;
-
+    void init() {
+        plays = new QVector<int>();
         for(int i = 0; i<7; i++){
             grid[i] = new char[6];
             for(int j = 0; j<6; j++)
                 grid[i][j] = '0';
         }
+        turn = player1;
     }
 
     int play(int x);

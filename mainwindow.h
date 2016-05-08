@@ -1,11 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-using namespace std;
-
 #include <QMainWindow>
-#include <string>
-#include <iostream>
+#include <QMessageBox>
+#include <QFile>
+#include <QTextStream>
 #include "gui.h"
 #include "Organizer.h"
 
@@ -29,10 +28,15 @@ private:
     Player *p1;
     Player *p2;
     Organizer *gameOrganizer;
-    void undo();
-    void redo();
+    void startGame();
 private slots:
     void columnClicked(int column);
+    void newGameClk();
+    void finished(Player* player);
+    void undo();
+    void redo();
+    void on_btnLoad_clicked();
+    void on_btnSave_clicked();
 };
 
 #endif // MAINWINDOW_H

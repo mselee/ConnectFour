@@ -1,23 +1,21 @@
-#include <string>
-
-using namespace std;
+#include <QString>
 
 class Player
 {
 private:
     char colour;
-	string name;
-	int score ;
+    QString name;
+    int score;
 
 public :
     Player(){}
-    Player(string _name, char _colour) {
+    Player(QString _name, char _colour) {
         name = _name;
         colour = _colour;
         score = 0;
     }
 
-	void setname(string x)
+    void setname(QString x)
 	{
 		name=x;
 	}
@@ -29,7 +27,7 @@ public :
 	{
 		score=s;
 	}
-	string getname()
+    QString getname()
 	{
 		return name;
 	}
