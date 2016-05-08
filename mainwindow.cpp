@@ -33,7 +33,7 @@ void MainWindow::startGame() {
 
 void MainWindow::finished(Player *player) {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Game Finished!", "Player " + player->getname() + " has won. Replay ?", QMessageBox::Yes | QMessageBox::No);
+    reply = QMessageBox::question(this, "Game Finished!", player->getname() + " has won. Replay ?", QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         if(player->getcolour()=='r')
             ui->Score1->setText(QString::number(player->getscore()));
