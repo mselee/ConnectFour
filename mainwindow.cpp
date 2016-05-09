@@ -170,3 +170,22 @@ MainWindow::~MainWindow()
     if (gameOrganizer != nullptr)
         delete gameOrganizer;
 }
+
+void MainWindow::on_btnAuto_clicked()
+{
+    QPair<int, int> block = QPair<int, int>(gameOrganizer->AutoMove());
+    int column = block.first;
+    int row = block.second;
+    if (column == -1 || row == -1) return;
+
+    char color = gameOrganizer->turnToPlay()->getcolour();
+
+    if(color == 'r')
+        helper->drawBlock(column, row, QBrush(QColor(Qt::red)));
+    else if(color == 'b')
+        helper->drawBlock(column, row, QBrush(QColor(Qt::blue)));
+    ui->btnUndo->setProperty("enabled", true);
+    ui->btnRedo->setProperty("enabled", false);
+    updateTurn();
+    if (gameOrganizer->isFinished()) finished(gameOrganizer->turnToPlay());
+}

@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QDir>
 #include <QDateTime>
+#include <QPair>
 #include <QTextStream>
 #include "gui.h"
 #include "Organizer.h"
@@ -41,6 +42,7 @@ private slots:
     void redo();
     void on_btnLoad_clicked();
     void on_btnSave_clicked();
+    void on_btnAuto_clicked();
 };
 
 #endif // MAINWINDOW_H

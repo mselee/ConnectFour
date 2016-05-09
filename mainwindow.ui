@@ -269,6 +269,19 @@ color: blue;
      <string>Current Turn:</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="btnAuto">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>340</y>
+      <width>80</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>AutoPlay</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

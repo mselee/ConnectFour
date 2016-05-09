@@ -2,6 +2,7 @@
 #include <QVector>
 #include "Player.h"
 #include <stack>
+#include <QPair>
 
 using namespace std;
 
@@ -24,6 +25,7 @@ public:
         player1 = p1;
         player2 = p2;
     }
+
     ~Organizer() {
         delete player1;
         delete player2;
@@ -39,6 +41,9 @@ public:
         }
         turn = player1;
     }
+
+    QPair<int, int> AutoMove();
+//    int maxCount();
 
     int play(int x);
 

@@ -153,9 +153,114 @@ bool Organizer::isWinning(int x, int y) {
     return false;
 }
 
+//int Organizer::maxCount() {
+//    char color = grid[x][y];
+
+//    //check horizontal axis     (WORKING)
+//    int max_count = 0;
+//    int count = 0;
+//    for(int i = 0; i < 7; i++) {
+//        if(grid[i][y] == color)
+//            count++;
+//        else
+//            count = 0;
+//    }
+
+//    if (count > max_count)
+//        max_count = count;
+
+//    //check vertically      (WORKING)
+//    count = 0;
+//    for(int i = y; i >= 0; i--) {
+//        if(grid[x][i] == color)
+//            count++;
+//        else
+//            count = 0;
+//    }
+
+//    if (count > max_count)
+//        max_count = count;
+
+//    //check lower upward diagonal   (WORKING)
+//    if(x > y) {
+//        count = 0;
+//        int j = 0;
+//        for(int i = x - y; i < 7; i++) {
+//            if(grid[i][j] == color)
+//                count++;
+//            else
+//                count = 0;
+//            j++;
+//        }
+
+//        if (count > max_count)
+//            max_count = count;
+//    }
+
+//    //check upper upward diagonal
+//    else {
+//        count = 0;
+//        int i = 0;
+//        for(int j = y - x; j < 6; j++) {
+//            if(grid[i][j] == color)
+//                count++;
+//            else
+//                count = 0;
+//            i++;
+//        }
+
+//        if (count > max_count)
+//            max_count = count;
+//    }
+
+//    //check lower downward diagonal     (WORKING)
+//    if(x+y < 6) {
+//        count = 0;
+//        int i = 0;
+//        for(int j = x+y; j >= 0; j--) {
+//            if(grid[i][j] == color)
+//                count++;
+//            else
+//                count = 0;
+//            i++;
+//        }
+//        if (count > max_count)
+//            max_count = count;
+//    }
+
+//    //check upper downward diagonal     (WORKING)
+//    else {
+//        count = 0;
+//        int i = x - (5-y);
+//        for(int j = 5; j >= (x+y) - 6; j--) {
+//            if(grid[i][j] == color)
+//                count++;
+//            else
+//                count = 0;
+//            i++;
+//        }
+//        if (count > max_count)
+//            max_count = count;
+//    }
+//    return max_count;
+//}
+
 void Organizer::switchTurn() {
     if(turn == player1)
         turn = player2;
     else
         turn = player1;
+}
+
+QPair<int, int> Organizer::AutoMove() {
+    for (int x = 0; x < 7; ++x) {
+        int y = play(x);
+        if (!isFinished()) {
+            undo();
+        }
+        else {
+            return QPair<int, int>(x, y);
+        }
+    }
+    return QPair<int, int>(-1, -1);
 }
