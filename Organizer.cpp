@@ -36,6 +36,7 @@ pair<int,int> Organizer::undo(){
         play = make_pair(-1,-1);
         return play;
     }
+    plays->removeLast();
    play = undo_stack.top();
     undo_stack.pop();
     grid[play.first][play.second] = '0';
@@ -51,6 +52,7 @@ pair<int,int> Organizer::redo() {
         return play;
     }
     play = redo_stack.top();
+    plays->push_back(play.first);
     redo_stack.pop();
     grid[play.first][play.second] = turnToPlay()->getcolour();
     undo_stack.push(play);
